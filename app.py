@@ -129,19 +129,112 @@ def alumno(numero):
 @app.route("/scanner", methods=["GET"])
 def scanner():
     return """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Escáner QR - Secundaria 83</title>
-    </head>
-    <body>
-        <h2>Escáner QR - Secundaria 83</h2>
-        <p>Pantalla del lector QR funcionando.</p>
-    </body>
-    </html>
-    """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escáner QR - Secundaria 83</title>
 
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #reader {
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Escáner QR - Secundaria 83</h2>
+
+    <p>Coloca el código QR de la credencial frente a la cámara.</p>
+
+    <div id="reader"></div>
+
+    <div id="resultado">
+        Esperando código QR...
+    </div>
+
+    <script>
+        let procesando = false;
+
+        function qrLeido(texto) {
+
+            if (procesando) return;
+            procesando = true;
+
+            document.getElementById("resultado").innerHTML =
+                "QR detectado. Registrando llegada...";
+
+            let numero = texto.trim();
+
+            fetch("/alumno/" + encodeURIComponent(numero))
+                .then(response => response.json())
+                .then(data => {
+
+                    if (data.ok) {
+                        document.getElementById("resultado").innerHTML =
+                            "✅ Llegada registrada y WhatsApp enviado.";
+                    } else {
+                        document.getElementById("resultado").innerHTML =
+                            "⚠️ No se pudo completar el registro.";
+                    }
+
+                    setTimeout(function() {
+                        procesando = false;
+                        document.getElementById("resultado").innerHTML =
+                            "Esperando siguiente código QR...";
+                    }, 5000);
+
+                })
+                .catch(error => {
+
+                    document.getElementById("resultado").innerHTML =
+                        "❌ Error al procesar el código.";
+
+                    setTimeout(function() {
+                        procesando = false;
+                    }, 5000);
+                });
+        }
+
+        function errorQR(error) {
+        }
+
+        const lector = new Html5QrcodeScanner(
+            "reader",
+            {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                rememberLastUsedCamera: true
+            },
+            false
+        );
+
+        lector.render(qrLeido, errorQR);
+
+    </script>
+
+</body>
+</html>
+"""
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
