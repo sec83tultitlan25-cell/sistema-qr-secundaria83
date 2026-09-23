@@ -82,11 +82,11 @@ def enviar_prueba():
 
 @app.route("/alumno/<numero>", methods=["GET"])
 def alumno(numero):
-        nombre_alumno = "Juan Pérez López"
+    nombre_alumno = "Juan Pérez López"
     grado_grupo = "1° A"
-ahora = datetime.now(ZoneInfo("America/Mexico_City"))
-fecha = ahora.strftime("%d/%m/%Y")
-hora = ahora.strftime("%I:%M %p")
+    ahora = datetime.now(ZoneInfo("America/Mexico_City"))
+    fecha = ahora.strftime("%d/%m/%Y")
+    hora = ahora.strftime("%I:%M %p")
 
     if numero != "1":
         return jsonify({
