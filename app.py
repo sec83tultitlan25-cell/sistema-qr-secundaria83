@@ -81,11 +81,49 @@ def enviar_prueba():
 
 @app.route("/alumno/<numero>", methods=["GET"])
 def alumno(numero):
+    if numero != "1":
+        return jsonify({
+            "ok": False,
+            "mensaje": "Alumno no encontrado"
+        }), 404
+
+    numero_destino = "525534935142"
+
+    url = (
+        f"https://graph.facebook.com/v24.0/"
+        f"{WHATSAPP_PHONE_NUMBER_ID}/messages"
+    )
+
+    headers = {
+        "Authorization": f"Bearer {WHATSAPP_TOKEN}",
+        "Content-Type": "application/json"
+    }
+
+    mensaje = {
+        "messaging_product": "whatsapp",
+        "to": numero_destino,
+        "type": "template",
+        "template": {
+            "name": "hello_world",
+            "language": {
+                "code": "en_US"
+            }
+        }
+    }
+
+    respuesta = requests.post(
+        url,
+        headers=headers,
+        json=mensaje,
+        timeout=20
+    )
+
     return jsonify({
-        "ok": True,
+        "ok": respuesta.ok,
         "numero_alumno": numero,
-        "mensaje": "QR leído correctamente"
-    }), 200
+        "whatsapp_status": respuesta.status_code,
+        "respuesta_meta": respuesta.json()
+    }), respuesta.status_code
 
 
 if __name__ == "__main__":
