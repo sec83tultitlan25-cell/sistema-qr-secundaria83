@@ -126,5 +126,22 @@ def alumno(numero):
     }), respuesta.status_code
 
 
+@app.route("/scanner", methods=["GET"])
+def scanner():
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Escáner QR - Secundaria 83</title>
+    </head>
+    <body>
+        <h2>Escáner QR - Secundaria 83</h2>
+        <p>Pantalla del lector QR funcionando.</p>
+    </body>
+    </html>
+    """
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
