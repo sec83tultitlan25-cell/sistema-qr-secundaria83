@@ -79,5 +79,14 @@ def enviar_prueba():
     }), respuesta.status_code
 
 
+@app.route("/alumno/<numero>", methods=["GET"])
+def alumno(numero):
+    return jsonify({
+        "ok": True,
+        "numero_alumno": numero,
+        "mensaje": "QR leído correctamente"
+    }), 200
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
