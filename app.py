@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 import os
 import requests
-
+from datetime import datetime
+from zoneinfo import ZoneInfo
 app = Flask(__name__)
 
 VERIFY_TOKEN = "secundaria83_qr_2026"
@@ -59,9 +60,9 @@ def enviar_prueba():
         "to": numero_destino,
         "type": "template",
         "template": {
-            "name": "hello_world",
+            "name": "aviso_llegada_alumno",
             "language": {
-                "code": "en_US"
+                "code": "es_MX"
             }
         }
     }
@@ -81,6 +82,12 @@ def enviar_prueba():
 
 @app.route("/alumno/<numero>", methods=["GET"])
 def alumno(numero):
+        nombre_alumno = "Juan Pérez López"
+    grado_grupo = "1° A"
+ahora = datetime.now(ZoneInfo("America/Mexico_City"))
+fecha = ahora.strftime("%d/%m/%Y")
+hora = ahora.strftime("%I:%M %p")
+
     if numero != "1":
         return jsonify({
             "ok": False,
@@ -104,10 +111,20 @@ def alumno(numero):
         "to": numero_destino,
         "type": "template",
         "template": {
-            "name": "hello_world",
+            "name": "aviso_llegada_alumno",
             "language": {
-                "code": "en_US"
-            }
+                "code": "es_MX"
+            },"components": [
+    {
+        "type": "body",
+        "parameters": [
+            {"type": "text", "text": nombre_alumno},
+            {"type": "text", "text": grado_grupo},
+            {"type": "text", "text": fecha},
+            {"type": "text", "text": hora}
+        ]
+    }
+]
         }
     }
 
