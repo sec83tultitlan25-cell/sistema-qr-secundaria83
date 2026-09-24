@@ -62,7 +62,7 @@ def enviar_prueba():
         "template": {
             "name": "aviso_llegada_alumno",
             "language": {
-                "code": "es_MX"
+                "code": "es"
             }
         }
     }
@@ -113,7 +113,7 @@ def alumno(numero):
         "template": {
             "name": "aviso_llegada_alumno",
             "language": {
-                "code": "es_MX"
+                "code": "es"
             },"components": [
     {
         "type": "body",
