@@ -56,17 +56,27 @@ def enviar_prueba():
     }
 
     mensaje = {
-        "messaging_product": "whatsapp",
-        "to": numero_destino,
-        "type": "template",
-        "template": {
-            "name": "aviso_llegada_alumno",
-            "language": {
-                "code": "es_MX"
+    "messaging_product": "whatsapp",
+    "to": numero_destino,
+    "type": "template",
+    "template": {
+        "name": "aviso_llegada_alumno",
+        "language": {
+            "code": "es_MX"
+        },
+        "components": [
+            {
+                "type": "body",
+                "parameters": [
+                    {"type": "text", "text": "Juan Pérez López"},
+                    {"type": "text", "text": "1° A"},
+                    {"type": "text", "text": "24/09/2026"},
+                    {"type": "text", "text": "6:15 p. m."}
+                ]
             }
-        }
+        ]
     }
-
+}
     respuesta = requests.post(
         url,
         headers=headers,
