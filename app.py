@@ -46,7 +46,7 @@ def enviar_prueba():
     numero_destino = "525534935142"
 
     url = (
-        f"https://graph.facebook.com/v24.0/"
+        f"https://graph.facebook.com/v25.0/"
         f"{WHATSAPP_PHONE_NUMBER_ID}/messages"
     )
 
@@ -62,7 +62,7 @@ def enviar_prueba():
         "template": {
             "name": "aviso_llegada_alumno",
             "language": {
-                "code": "es"
+                "code": "es_MX"
             }
         }
     }
@@ -97,7 +97,7 @@ def alumno(numero):
     numero_destino = "525534935142"
 
     url = (
-        f"https://graph.facebook.com/v24.0/"
+        f"https://graph.facebook.com/v25.0/"
         f"{WHATSAPP_PHONE_NUMBER_ID}/messages"
     )
 
@@ -113,7 +113,7 @@ def alumno(numero):
         "template": {
             "name": "aviso_llegada_alumno",
             "language": {
-                "code": "es"
+                "code": "es_MX"
             },"components": [
     {
         "type": "body",
